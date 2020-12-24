@@ -104,3 +104,5 @@ What can possibly go wrong with this design:
   - Make sure you added the Custom DNS server IP address as conditional forwarder IP. 
   
  If everything is configured fine in On-Premises end and still you are not able to resolve to Private IP of Private Endpoint, navigate to [Scenario 1, Category 2](https://github.com/msrini-MSFT/troubleshooting-Private-Link-DNS-Scenarios#category-2-if-you-are-using-a-custom-dns-in-source-virtual-network) and follow the troubleshooting steps mentioned. 
+
+Thank you for using to guide to troubleshoot. If you find any improvements or concerns, please feel free to raise an issue below. 
