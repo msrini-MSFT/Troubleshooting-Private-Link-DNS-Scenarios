@@ -103,4 +103,4 @@ What can possibly go wrong with this design:
   - Make sure you add the service FQDN in the conditional Forwarder not the privatelink FQDN. You need to add **blob.core.windows.net** not **privatelink.blob.core.windows.net** in the conditional forwarder. 
   - Make sure you added the Custom DNS server IP address as conditional forwarder IP. 
   
-  
+ If everything is configured fine in On-Premises end and still you are not able to resolve to Private IP of Private Endpoint, navigate to [Scenario 1, Category 2](https://github.com/msrini-MSFT/troubleshooting-Private-Link-DNS-Scenarios#category-2-if-you-are-using-a-custom-dns-in-source-virtual-network) and follow the troubleshooting steps mentioned. 
