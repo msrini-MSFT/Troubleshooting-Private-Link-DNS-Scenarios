@@ -13,7 +13,7 @@ This is a troubleshooting guide for Private Link DNS issue. Based on your enviro
   
 ## Does your service linked to a Private Endpoint? 
 The first step is to check if your Service is configured with Private Endpoint. You can navigate to your respective resource and check if the Private Endpoint is configured and in succeeded state. Also make sure the Private Endpoint connection is approved. 
-Once you verified that your Private Endpoint, Private Endpoint connection, Private Endpoint NIC are in succeeded state, now its time to check if your resource is mapped to privatelink FQDN. If you create a private endpoint for a Storage Blob, here is how the CNAME mapping would look like:
+Once you verified that your Private Endpoint, Private Endpoint connection, Private Endpoint NIC are in succeeded state, now its time to check if your resource is mapped to privatelink FQDN. I have created a private endpoint for a Storage Blob, here is how the CNAME mapping would look like:
 
 **msrini1.blob.core.windows.net.            59 IN	CNAME	msrini1.privatelink.blob.core.windows.net.**
 
@@ -31,5 +31,8 @@ Based on the type of DNS you use, choose one of the below category:
 
 ### Category 1: If you are using Azure Provided DNS in the Source Virtual Network
 
+- RDP or SSH into your Source Virtual Machine and perform nslookup to your service FQDN. 
 
+
+ If everything is configured correctly, then you should be able to get a Private IP of your Private Endpoint as response.In case if you are getting resolved to a Public IP, then that indicates your DNS queries are sent to a Public resolver rather than Private DNS Zone which you have created for your service during the creation of your Private Endpoint. 
 
