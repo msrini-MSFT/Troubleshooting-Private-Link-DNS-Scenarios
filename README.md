@@ -12,7 +12,7 @@ This is a troubleshooting guide for Private Link DNS issue. Based on your enviro
  - Scenario 2 - If your Source Machine is deployed in On-Premises/ other cloud.   
   
 ## Does your service linked to a Private Endpoint? 
-The first step to check if your Service is configured with Private Endpoint. You can navigate to your respective resource and check if the Private Endpoint is configured and in succeeded state. Also make sure the Private Endpoint connection is approved. 
+The first step is to check if your Service is configured with Private Endpoint. You can navigate to your respective resource and check if the Private Endpoint is configured and in succeeded state. Also make sure the Private Endpoint connection is approved. 
 Once you verified that your Private Endpoint, Private Endpoint connection, Private Endpoint NIC are in succeeded state, now its time to check if your resource is mapped to privatelink FQDN. If you create a private endpoint for a Storage Blob, here is how the CNAME mapping would look like:
 
 **msrini1.blob.core.windows.net.            59 IN	CNAME	msrini1.privatelink.blob.core.windows.net.**
