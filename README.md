@@ -82,3 +82,14 @@ In your custom DNS, you can configure forwarder by two ways:
 What can possibly go wrong with this design:
 - You might have not configured the conditional forwarder of the respective service (blob.core.windows.net) pointing to 168.63.129.16. 
 - If that is configured forwarder correctly, make sure the Private DNS Zone which you have created is linked to the VNET where the DNS server is deployed. 
+
+#### Sub-category 2 - If your Private Endpoint and Custom DNS are part of different Virtual Network
+
+The DNS query flow happens as follows:
+
+Source VM --> Custom DNS Server (Looks for the conditional forwarder) (DNS sevrer in differnet VNET) --> Azure DNS (168.63.129.16) --> PrivateDNS Zone which is linked to the VNET -> A record -PE IP
+
+What can possibly go wrong with this design:
+- The Source VM's VNET and the Custom DNS VNET are connected by either Vnet-peering or Site to Site or Express Route or Vnet to Vnet connection. The DNS query may fail ,if there is a disconnect between these 2 VNETs. So, it is always good to start with IP connectivity to the DNS server from the Source VM. You can use tools like [Psping](https://docs.microsoft.com/sysinternals/downloads/psping) to test the layer 4 connectivity between 2 resources in Azure. If there are IP connectivity, then follow the below steps. 
+- You might have not configured the conditional forwarder of the respective service (blob.core.windows.net) pointing to 168.63.129.16. 
+- If that is configured forwarder correctly, make sure the Private DNS Zone which you have created is linked to the VNET where the DNS server is deployed. 
