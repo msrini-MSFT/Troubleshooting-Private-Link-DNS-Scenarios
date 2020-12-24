@@ -99,6 +99,7 @@ What can possibly go wrong with this design:
 - When your DNS query from On-Prem to Azure resources for the Private Endpoint fails, first make sure your have IP connectivity to Azure VNET where the custom DNS(Forwarder) is deployed. You can use tools like [Psping](https://docs.microsoft.com/sysinternals/downloads/psping) to test the layer 4 connectivity. 
 
 - Once you made sure that the IP connectivity is not affected, On-Prem DNS configuration needs to be checked. 
+![image](./media/On-PremDNS.png)
   - Make sure you add the service FQDN in the conditional Forwarder not the privatelink FQDN. You need to add **blob.core.windows.net** not **privatelink.blob.core.windows.net** in the conditional forwarder. 
   - Make sure you added the Custom DNS server IP address as conditional forwarder IP. 
   
