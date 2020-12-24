@@ -31,9 +31,42 @@ Based on the type of DNS you use, choose one of the below category:
 
 ### Category 1: If you are using Azure Provided DNS in the Source Virtual Network
 
-- RDP or SSH into your Source Virtual Machine and perform nslookup to your service FQDN.
+- RDP or SSH into your Source Virtual Machine and perform nslookup to your service FQDN. If everything is configured correctly, then you should be able to get a Private IP of your Private Endpoint as shown below:
 
 ![image](./media/NslookupOutputforworking.png)
 
- If everything is configured correctly, then you should be able to get a Private IP of your Private Endpoint as response.In case if you are getting resolved to a Public IP, then that indicates your DNS queries are sent to a Public resolver rather than Private DNS Zone which you have created for your service during the creation of your Private Endpoint. 
+In case if you are getting resolved to a Public IP, then that indicates your DNS queries are sent to a Public resolver rather than Private DNS Zone which you have created for your service during the creation of your Private Endpoint. 
+
+To check this, navigate to Private DNS Zone which has the A record pointing to the Private Endpoint and make sure that is liked to your Source VM's Virtial Network. 
+
+![image](./media/PrivateDNSZonelink.png)
+
+If you are able to confirm that the DNS Zone is linked to your Source Virtual Network and still you are resolving to Public IP, then go ahead and raise a Support Ticket. 
+> [!Important]
+> **Known Issue and recommended solution:**
+
+> Issue: You get a NX response from DNS even though you link your VNET to the Private DNS Zone of your service. 
+
+> **Environment:**
+
+> Virtual Network : VNET1
+> Private DNS Zone : privatelink.blob.core.windows.net
+> Private Endpoints: PE1 - 10.0.0.4 , PE2 - 10.1.1.4
+> Virtual Machine : VM1 deployed in VNET1
+
+> Here VNET1 is linked to Private DNS Zone named "privatelink.blob.core.windows.net" which has a A record **azstorage** pointing to 10.0.0.4. When VM1 tried to access **azstorage.blob.windows.core.net** it is resolving to 10.0.0.4. But from the same VM1, if I try to access "msrini1.blob.windows.net", there are no response. 
+
+> This can happen, when both the Storage account is linked to Private Endpoint and have 2 differnet Private DNS Zones created. Each Private DNS Zone will be having a single A record which is pointing to a Private Endpoint. This scenario will work if VNET1 is linked to both the Private DNS Zone **privatelink.blob.windows.core.net** but we will fail to notice it as both DNS Zone has the same name 
+
+> **Solution:**
+> Recommended design is to have a single Private DNS Zone for a service and link all the VNET that needs to utilize the Private Endpoint. When you deploy a new Private Endpoint you can select the existing Private DNS Zone as shown below:
+
+![image](./media/CreatePrivateEndpointDNSZone.png)
+
+### Category 2: If you are using a Custom DNS in Source Virtual Network
+
+Based on the VNET where you deployed your PE and Custom DNS, choose any one of the sub-category:
+
+#### Sub-category 1 - If your Private Endpoint and Custom DNS are part of same Virtual Network
+
 
