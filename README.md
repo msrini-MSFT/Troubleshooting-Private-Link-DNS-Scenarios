@@ -45,14 +45,14 @@ If you are able to confirm that the DNS Zone is linked to your Source Virtual Ne
 > [!Important]
 > **Known Issue and recommended solution:**
 
-> Issue: You get a NX response from DNS even though you link your VNET to the Private DNS Zone of your service. 
+> **Issue:** You get a NX response from DNS even though you link your VNET to the Private DNS Zone of your service. 
 
 > **Environment:**
 
-> Virtual Network : VNET1
-> Private DNS Zone : privatelink.blob.core.windows.net
-> Private Endpoints: PE1 - 10.0.0.4 , PE2 - 10.1.1.4
-> Virtual Machine : VM1 deployed in VNET1
+> - Virtual Network : VNET1
+> - Private DNS Zone : privatelink.blob.core.windows.net
+> - Private Endpoints: PE1 - 10.0.0.4 , PE2 - 10.1.1.4
+> - Virtual Machine : VM1 deployed in VNET1
 
 > Here VNET1 is linked to Private DNS Zone named "privatelink.blob.core.windows.net" which has a A record **azstorage** pointing to 10.0.0.4. When VM1 tried to access **azstorage.blob.windows.core.net** it is resolving to 10.0.0.4. But from the same VM1, if I try to access "msrini1.blob.windows.net", there are no response. 
 
@@ -69,4 +69,14 @@ Based on the VNET where you deployed your PE and Custom DNS, choose any one of t
 
 #### Sub-category 1 - If your Private Endpoint and Custom DNS are part of same Virtual Network
 
+The DNS query flow happens as follows:
 
+Source VM --> Custom DNS Server (Looks for the conditional forwarder) --> Azure DNS (168.63.129.16) --> PrivateDNS Zone which is linked to the VNET -> A record -PE IP
+
+In your custom DNS, you can configure forwarder by two ways:
+- Add forwarder to 168.63.129.16 where all the DNS queries which doesn't have local entries goes to Azure DNS. 
+- Add a Conditional Forwarder (blob.core.windows.net) to 168.63.129.16 where only the DNS queries of '* .blob.windows.net' will be send to Azure DNS. Rest of the DNS queries are sent to the root hints which has the public resolver. 
+
+What can possibly go wrong with this design:
+- You might have not configured the conditional forwarder of the respective service (blob.core.windows.net) pointing to 168.63.129.16. 
+- If that is configured forwarder correctly, make sure the Private DNS Zone which you have created is linked to the VNET where the DNS server is deployed. 
