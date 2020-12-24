@@ -56,7 +56,7 @@ If you are able to confirm that the DNS Zone is linked to your Source Virtual Ne
 
 > Here VNET1 is linked to Private DNS Zone named "privatelink.blob.core.windows.net" which has a A record **azstorage** pointing to 10.0.0.4. When VM1 tried to access **azstorage.blob.windows.core.net** it is resolving to 10.0.0.4. But from the same VM1, if I try to access "msrini1.blob.windows.net", there are no response. 
 
-> This can happen, when both the Storage account is linked to Private Endpoint and have 2 differnet Private DNS Zones created. Each Private DNS Zone will be having a single A record which is pointing to a Private Endpoint. This scenario will work if VNET1 is linked to both the Private DNS Zone **privatelink.blob.windows.core.net** but we will fail to notice it as both DNS Zone has the same name 
+> This can happen, when both the Storage account is linked to Private Endpoint and have 2 differnet Private DNS Zones created. Each Private DNS Zone will be having a single A record which is pointing to a Private Endpoint and linked to respective VNETs. 
 
 > **Solution:**
 > Recommended design is to have a single Private DNS Zone for a service and link all the VNET that needs to utilize the Private Endpoint. When you deploy a new Private Endpoint you can select the existing Private DNS Zone as shown below:
@@ -93,3 +93,13 @@ What can possibly go wrong with this design:
 - The Source VM's VNET and the Custom DNS VNET are connected by either Vnet-peering or Site to Site or Express Route or Vnet to Vnet connection. The DNS query may fail ,if there is a disconnect between these 2 VNETs. So, it is always good to start with IP connectivity to the DNS server from the Source VM. You can use tools like [Psping](https://docs.microsoft.com/sysinternals/downloads/psping) to test the layer 4 connectivity between 2 resources in Azure. If there are IP connectivity, then follow the below steps. 
 - You might have not configured the conditional forwarder of the respective service (blob.core.windows.net) pointing to 168.63.129.16. 
 - If that is configured forwarder correctly, make sure the Private DNS Zone which you have created is linked to the VNET where the DNS server is deployed. 
+
+## Scenario 2 - If your Source Machine is deployed in On-Premises/ other cloud.
+
+- When your DNS query from On-Prem to Azure resources for the Private Endpoint fails, first make sure your have IP connectivity to Azure VNET where the custom DNS(Forwarder) is deployed. You can use tools like [Psping](https://docs.microsoft.com/sysinternals/downloads/psping) to test the layer 4 connectivity. 
+
+- Once you made sure that the IP connectivity is not affected, On-Prem DNS configuration needs to be checked. 
+  - Make sure you add the service FQDN in the conditional Forwarder not the privatelink FQDN. You need to add **blob.core.windows.net** not **privatelink.blob.core.windows.net** in the conditional forwarder. 
+  - Make sure you added the Custom DNS server IP address as conditional forwarder IP. 
+  
+  
