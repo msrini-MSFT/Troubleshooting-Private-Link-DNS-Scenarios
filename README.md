@@ -44,7 +44,7 @@ To check this, navigate to Private DNS Zone which has the A record pointing to t
 If you are able to confirm that the DNS Zone is linked to your Source Virtual Network and still you are resolving to Public IP, then go ahead and raise a Support Ticket. 
 
 ---
-**Known Issue and recommended solution:**
+## Known Issue and recommended solution:
 
  **Issue:** You get a NX response from DNS even though you link your VNET to the Private DNS Zone of your service. 
 
@@ -60,8 +60,9 @@ If you are able to confirm that the DNS Zone is linked to your Source Virtual Ne
  **Solution:**
   Recommended design is to have a single Private DNS Zone for a service and link all the VNET that needs to utilize the Private Endpoint. When you deploy a new Private Endpoint you can select the existing Private DNS Zone as shown below:
   
----
 ![image](./media/CreatePrivateEndpointDNSZone.png)
+
+---
 
 ### Category 2: If you are using a Custom DNS in Source Virtual Network
 
