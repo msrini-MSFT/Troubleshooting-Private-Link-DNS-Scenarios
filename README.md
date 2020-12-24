@@ -75,7 +75,7 @@ Source VM --> Custom DNS Server (Looks for the conditional forwarder) --> Azure 
 
 In your custom DNS, you can configure forwarder by two ways:
 - Add forwarder to 168.63.129.16 where all the DNS queries which doesn't have local entries goes to Azure DNS. 
-- Add a Conditional Forwarder (blob.core.windows.net) to 168.63.129.16 where only the DNS queries of '* .blob.windows.net' will be send to Azure DNS. Rest of the DNS queries are sent to the root hints which has the public resolver. 
+- Add a Conditional Forwarder (blob.core.windows.net) to 168.63.129.16 where only the DNS queries of '(star).blob.windows.net' will be send to Azure DNS. Rest of the DNS queries are sent to the root hints which has the public resolver. 
 
 What can possibly go wrong with this design:
 - You might have not configured the conditional forwarder of the respective service (blob.core.windows.net) pointing to 168.63.129.16. 
