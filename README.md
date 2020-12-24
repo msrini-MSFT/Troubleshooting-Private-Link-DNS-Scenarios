@@ -31,8 +31,9 @@ Based on the type of DNS you use, choose one of the below category:
 
 ### Category 1: If you are using Azure Provided DNS in the Source Virtual Network
 
-- RDP or SSH into your Source Virtual Machine and perform nslookup to your service FQDN. 
+- RDP or SSH into your Source Virtual Machine and perform nslookup to your service FQDN.
 
+![image](./media/NslookupOutputforworking.png)
 
  If everything is configured correctly, then you should be able to get a Private IP of your Private Endpoint as response.In case if you are getting resolved to a Public IP, then that indicates your DNS queries are sent to a Public resolver rather than Private DNS Zone which you have created for your service during the creation of your Private Endpoint. 
 
